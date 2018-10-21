@@ -11,38 +11,26 @@ function run() {
     clockRunning = true;
     }
   }
-
   //  The decrement function.
   function decrement() {
-
     //  Decrease number by one.
     if(number > 0){
         number--;
     }
-    
-
     //  Show the number in the #show-number tag.
-    $(".show-timer").html("<h1> Time Remaining: " + number + "</h1>");
-
-
+    $(".show-timer").html("<h3> Time Remaining: " + number + "</h3>");
     //  Once number hits zero...
     if (number === 0) {
-
-      //  ...run the stop function.
       stop();
-
-      //  Alert the user that time is up.
-      alert("Time Up!");
       questionIndex ++;
       waCounter ++;
+      reset();
       renderQuestion();
-    //   run();
     }
   }
 
   //  The stop function
   function stop() {
-
     //  Clears our intervalId
     //  We just pass the name of the interval
     //  to the clearInterval function.
@@ -50,9 +38,6 @@ function run() {
     clockRunning = false;
     number = 10;
   }
-
-  //  Execute the run function.
-//   run();
 
 var questions = [
     { question: "How many legs does a spider have?",
@@ -68,18 +53,15 @@ var questions = [
       choice: ["Six","Five","Four","Three"],
     }
 ];         
-              
-              
-var cList =$("ul.answers");
+           
+var cList =$("#answer-block");
 
 function answerOption(value) {
-        var li = $('<li/>')
+        var p = $('<p/>')
             .addClass('list')
-            .appendTo(cList);
-        var aaa = $('<a/>')
+            .addClass('text-center')
             .text(value)
-            .appendTo(li);
-    // console.log(value);
+            .appendTo(cList);
 }
 
 // We start the game with a score of 0.
@@ -94,34 +76,24 @@ var questionIndex = 0;
 function renderQuestion() {
   // If there are still more questions, render the next one.
   console.log("index " + questionIndex);
-//  var len = questions.length;
   console.log("ques len " + questions.length);
   if (questionIndex <= (questions.length - 1)) {
-    run();
-    if (questionIndex === 0){
-        console.log("if");
         $(".question").html(questions[questionIndex].question);
         questions[questionIndex].choice.forEach(answerOption);
-    }else if (questionIndex === 1){
-        $(".question").html(questions[questionIndex].question);
-        $(".answers").empty();
-        questions[questionIndex].choice.forEach(answerOption);
-    }else if (questionIndex === 2){
-        $(".question").html(questions[questionIndex].question);
-        $(".answers").empty();
-        questions[questionIndex].choice.forEach(answerOption);
-    }
-    
+        run();
   }else{
-      alert ("Game Over");
       showStats();    
   }
 }
 
+function reset(){
+    $("#answer-block").empty();
+
+}
+
 function showStats(){
     $(".question-block").empty();
-    // $("ul").empty();
-    $("show-timer").empty();
+    $(".show-timer").empty();
     var totalQuestions = questions.length;
     $(".finalScore").html("You Got " +raCounter+ " correct of total " +totalQuestions +  " questions ")
 };
@@ -130,35 +102,21 @@ $(document).on('click','.list',answerClick);
 
 
 function answerClick(){
-        var input = $(this).text();
-        // console.log("click " + input);
-        var ans = questions[questionIndex].answer
-        // console.log("answers " + ans);
-        if(input.trim() == ans.trim()){
-            console.log("true");
-            // alert("correct answer");
-            stop();
-            raCounter ++;
-            questionIndex ++;
-            $(".list").text(" ");
-            // $("ul").html("You selected choice is Right!!");
-            $("ul").append("<li>You selected choice is Right!! </li>");  
-            renderQuestion();
-            // run();
-        }else{
-            // console.log("false");
-            // alert("wrong answer. " + ans + " is right answer");
-            stop();
-            waCounter ++;
-            questionIndex ++;
-            $("ul").append("<li>You selected choice is Wrong!! </li>");
-            renderQuestion();
-            // return;
-        }
+    var input = $(this).text();
+    var ans = questions[questionIndex].answer
+    if(input.trim() == ans.trim()){
+        stop();
+        raCounter ++;
+        questionIndex ++;
+        reset();
+        renderQuestion();
+    }else{
+        stop();
+        waCounter ++;
+        questionIndex ++;
+        reset();
+        renderQuestion();
+    }
 };
 
-
 renderQuestion();
-// showStats();
-// score();
-//  run();
