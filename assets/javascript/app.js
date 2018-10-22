@@ -2,6 +2,7 @@ var number = 10;
 var intervalId;
 var raCounter = 0;
 var waCounter = 0;
+var uaCounter = 0;
 var clockRunning = false;
 
 function run() {
@@ -23,9 +24,11 @@ function run() {
     if (number === 0) {
       stop();
       questionIndex ++;
-      waCounter ++;
+      uaCounter ++;
       reset();
-      renderQuestion();
+      showAnswer();
+    //   renderQuestion();
+    
     }
   }
 
@@ -54,7 +57,7 @@ var questions = [
     }
 ];         
            
-var cList =$("#answer-block");
+var cList =$(".answer-block");
 
 function answerOption(value) {
         var p = $('<p/>')
@@ -82,20 +85,43 @@ function renderQuestion() {
         questions[questionIndex].choice.forEach(answerOption);
         run();
   }else{
+     questionIndex=0;
       showStats();    
   }
 }
 
 function reset(){
-    $("#answer-block").empty();
-
+    $(".answer-block").empty();
 }
 
+// function showAnswer(){
+//     var totalAnsQuestion = raCounter + waCounter + uaCounter;
+//     console.log(totalAnsQuestion);
+//     var totalQuestions = questions.length;
+//     console.log(totalQuestions);
+//     console.log(questionIndex);
+//     if (totalQuestions > totalAnsQuestion){
+//         $(".answer-block").html("<p> Right Answer: " +questions[questionIndex].answer+ "<p>");
+//         $( ".answer-block" ).delay(5000).slideUp(); 
+        
+        
+//         renderQuestion();
+//     }else{
+//         showStats();
+//     }
+// }
+
 function showStats(){
-    $(".question-block").empty();
+    $(".question").empty();
     $(".show-timer").empty();
-    var totalQuestions = questions.length;
-    $(".finalScore").html("You Got " +raCounter+ " correct of total " +totalQuestions +  " questions ")
+    $(".question-block").html("<h3> Game Over below is you Score Details</h3>");
+    $(".answer-block").html("<p> Total Questions: " +questions.length+ "<p>");
+    $(".answer-block").append("<p> Right answer: " +raCounter+ "</p>");
+    $(".answer-block").append("<p> Wrong Answer Count: " + waCounter +"</p>");
+    $(".answer-block").append("<p> Unanswered Count: " + uaCounter + "</p>" );
+    // $(".answer-block").append('<button type="button">''Restart the Game!'+'</button>');
+
+
 };
 
 $(document).on('click','.list',answerClick);
@@ -107,14 +133,16 @@ function answerClick(){
     if(input.trim() == ans.trim()){
         stop();
         raCounter ++;
-        questionIndex ++;
         reset();
+        // showAnswer();
+        questionIndex ++;
         renderQuestion();
     }else{
         stop();
         waCounter ++;
-        questionIndex ++;
         reset();
+        // showAnswer();
+        questionIndex ++;
         renderQuestion();
     }
 };
