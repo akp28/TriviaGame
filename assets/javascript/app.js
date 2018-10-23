@@ -4,6 +4,7 @@ var raCounter = 0;
 var waCounter = 0;
 var uaCounter = 0;
 var clockRunning = false;
+var rightAnswer = false;
 
 function run() {
     if (!clockRunning) {
@@ -23,8 +24,8 @@ function run() {
     //  Once number hits zero...
     if (number === 0) {
       stop();
-      questionIndex ++;
-      uaCounter ++;
+    //   questionIndex ++;
+     uaCounter ++;
       reset();
       showAnswer();
     //   renderQuestion();
@@ -78,6 +79,7 @@ var questionIndex = 0;
 // Function to render questions.
 function renderQuestion() {
   // If there are still more questions, render the next one.
+  $(".showAns").remove();
   console.log("index " + questionIndex);
   console.log("ques len " + questions.length);
   if (questionIndex <= (questions.length - 1)) {
@@ -94,22 +96,28 @@ function reset(){
     $(".answer-block").empty();
 }
 
-// function showAnswer(){
-//     var totalAnsQuestion = raCounter + waCounter + uaCounter;
-//     console.log(totalAnsQuestion);
-//     var totalQuestions = questions.length;
-//     console.log(totalQuestions);
-//     console.log(questionIndex);
-//     if (totalQuestions > totalAnsQuestion){
-//         $(".answer-block").html("<p> Right Answer: " +questions[questionIndex].answer+ "<p>");
-//         $( ".answer-block" ).delay(5000).slideUp(); 
-        
-        
-//         renderQuestion();
-//     }else{
-//         showStats();
-//     }
-// }
+function showAnswer(){
+    // var totalAnsQuestion = raCounter + waCounter + uaCounter;
+    // console.log(totalAnsQuestion);
+    // var totalQuestions = questions.length;
+    // console.log(totalQuestions);
+    // console.log(questionIndex);
+    // $(".list").click (function(){
+    $(".show-timer").text(" ");
+    // stop();
+    if(!rightAnswer){
+        $(".answer-block").html("<p class ='showAns'> Right Answer is: " +questions[questionIndex].answer+ "<p>");
+    }else{
+        $(".answer-block").html("<p class ='showAns'> You Got Right Answer: " +questions[questionIndex].answer+ "<p>");
+    }
+        //  $(".answer-block").delay(2000);
+        questionIndex ++;
+        setTimeout(renderQuestion,3000);
+        // renderQuestion();
+    // }else{
+    //     showStats();
+    // }
+}
 
 function showStats(){
     $(".question").empty();
@@ -119,7 +127,7 @@ function showStats(){
     $(".answer-block").append("<p> Right answer: " +raCounter+ "</p>");
     $(".answer-block").append("<p> Wrong Answer Count: " + waCounter +"</p>");
     $(".answer-block").append("<p> Unanswered Count: " + uaCounter + "</p>" );
-    // $(".answer-block").append('<button type="button">''Restart the Game!'+'</button>');
+    $(".answer-block").add('<button type="button">Restart the Game!</button>');
 
 
 };
@@ -134,16 +142,20 @@ function answerClick(){
         stop();
         raCounter ++;
         reset();
-        // showAnswer();
-        questionIndex ++;
-        renderQuestion();
+        rightAnswer = true;
+        showAnswer();
+        // reset();
+        // $(".answer-block").html(" ");
+        
+        
     }else{
         stop();
         waCounter ++;
         reset();
-        // showAnswer();
-        questionIndex ++;
-        renderQuestion();
+        rightAnswer = false;
+        showAnswer();
+        // questionIndex ++;
+        // renderQuestion();
     }
 };
 
