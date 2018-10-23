@@ -76,6 +76,7 @@ var questionIndex = 0;
 // Function to render questions.
 function renderQuestion() {
   // If there are still more questions, render the next one.
+  $("#start").text(" ");
   $(".showAns").remove();
   console.log("index " + questionIndex);
   console.log("ques len " + questions.length);
@@ -115,7 +116,7 @@ function showStats(){
     $(".answer-block").append("<p> Right answer: " +raCounter+ "</p>");
     $(".answer-block").append("<p> Wrong Answer Count: " + waCounter +"</p>");
     $(".answer-block").append("<p> Unanswered Count: " + uaCounter + "</p>" );
-    // $(".answer-block").add('<button type="button">Restart the Game!</button>');
+    $("#stop").html('<h2>Restart the Game!</h2>');
 };
 
 $(document).on('click','.list',answerClick);
@@ -144,4 +145,5 @@ function answerClick(){
     }
 };
 
-renderQuestion();
+$("#start").click(renderQuestion);
+// $("#stop").click();
