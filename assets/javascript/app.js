@@ -24,12 +24,9 @@ function run() {
     //  Once number hits zero...
     if (number === 0) {
       stop();
-    //   questionIndex ++;
-     uaCounter ++;
+      uaCounter ++;
       reset();
       showAnswer();
-    //   renderQuestion();
-    
     }
   }
 
@@ -97,14 +94,8 @@ function reset(){
 }
 
 function showAnswer(){
-    // var totalAnsQuestion = raCounter + waCounter + uaCounter;
-    // console.log(totalAnsQuestion);
-    // var totalQuestions = questions.length;
-    // console.log(totalQuestions);
-    // console.log(questionIndex);
-    // $(".list").click (function(){
+  
     $(".show-timer").text(" ");
-    // stop();
     if(!rightAnswer){
         $(".answer-block").html("<p class ='showAns'> Right Answer is: " +questions[questionIndex].answer+ "<p>");
     }else{
@@ -113,10 +104,7 @@ function showAnswer(){
         //  $(".answer-block").delay(2000);
         questionIndex ++;
         setTimeout(renderQuestion,3000);
-        // renderQuestion();
-    // }else{
-    //     showStats();
-    // }
+        rightAnswer = false;
 }
 
 function showStats(){
@@ -127,9 +115,7 @@ function showStats(){
     $(".answer-block").append("<p> Right answer: " +raCounter+ "</p>");
     $(".answer-block").append("<p> Wrong Answer Count: " + waCounter +"</p>");
     $(".answer-block").append("<p> Unanswered Count: " + uaCounter + "</p>" );
-    $(".answer-block").add('<button type="button">Restart the Game!</button>');
-
-
+    // $(".answer-block").add('<button type="button">Restart the Game!</button>');
 };
 
 $(document).on('click','.list',answerClick);
@@ -145,7 +131,6 @@ function answerClick(){
         rightAnswer = true;
         showAnswer();
         // reset();
-        // $(".answer-block").html(" ");
         
         
     }else{
