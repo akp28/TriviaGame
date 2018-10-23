@@ -25,7 +25,7 @@ function run() {
     if (number === 0) {
       stop();
       uaCounter ++;
-      reset();
+    //   reset();
       showAnswer();
     }
   }
@@ -56,14 +56,16 @@ var questions = [
 ];         
            
 var cList =$(".answer-block");
-
+// var p = $('<p>');
 function answerOption(value) {
-        var p = $('<p/>')
+        console.log("for loop" +value);
+        var p = $('<p>')
+            //another way to do is p.attr("class","list");
             .addClass('list')
             .addClass('text-center')
             .text(value)
             .appendTo(cList);
-}
+};
 
 // We start the game with a score of 0.
 var score = 0;
@@ -76,13 +78,15 @@ var questionIndex = 0;
 // Function to render questions.
 function renderQuestion() {
   // If there are still more questions, render the next one.
-  $("#start").text(" ");
-  $(".showAns").remove();
-  console.log("index " + questionIndex);
-  console.log("ques len " + questions.length);
+  $("#start").hide();
+  $("#restart").hide();
+  $(".answer-block").empty();
+//   console.log("index " + questionIndex);
+//   console.log("ques len " + questions.length);
   if (questionIndex <= (questions.length - 1)) {
-        $(".question").html(questions[questionIndex].question);
+        $(".question-block").html('<p class = "question">' +questions[questionIndex].question + '</p>');
         questions[questionIndex].choice.forEach(answerOption);
+        // questionIndex ++;
         run();
   }else{
      questionIndex=0;
@@ -90,19 +94,29 @@ function renderQuestion() {
   }
 }
 
-function reset(){
+// function reset(){
+//     $(".list").remove();
+// }
+
+function resetAll(){
+    $(".quesiton-block").empty();
     $(".answer-block").empty();
+    waCounter = 0;
+    uaCounter = 0;
+    raCounter = 0;
+    renderQuestion();
 }
 
 function showAnswer(){
-  
-    $(".show-timer").text(" ");
+    $(".list").remove();
+    $(".show-timer").empty();
     if(!rightAnswer){
         $(".answer-block").html("<p class ='showAns'> Right Answer is: " +questions[questionIndex].answer+ "<p>");
+
     }else{
         $(".answer-block").html("<p class ='showAns'> You Got Right Answer: " +questions[questionIndex].answer+ "<p>");
+
     }
-        //  $(".answer-block").delay(2000);
         questionIndex ++;
         setTimeout(renderQuestion,3000);
         rightAnswer = false;
@@ -116,7 +130,7 @@ function showStats(){
     $(".answer-block").append("<p> Right answer: " +raCounter+ "</p>");
     $(".answer-block").append("<p> Wrong Answer Count: " + waCounter +"</p>");
     $(".answer-block").append("<p> Unanswered Count: " + uaCounter + "</p>" );
-    $("#stop").html('<h2>Restart the Game!</h2>');
+    $("#restart").show();
 };
 
 $(document).on('click','.list',answerClick);
@@ -128,22 +142,18 @@ function answerClick(){
     if(input.trim() == ans.trim()){
         stop();
         raCounter ++;
-        reset();
-        rightAnswer = true;
-        showAnswer();
         // reset();
-        
-        
+        rightAnswer = true;
+        showAnswer();    
     }else{
         stop();
         waCounter ++;
-        reset();
+        // reset();
         rightAnswer = false;
         showAnswer();
-        // questionIndex ++;
-        // renderQuestion();
     }
 };
 
+$("#restart").hide();
 $("#start").click(renderQuestion);
-// $("#stop").click();
+$("#restart").click(resetAll);
